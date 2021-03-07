@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html>
+    <head id="Head1"><link rel="icon" href="/favicon.ico" type="image/x-icon" /><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /><title>
+CashLine
+</title><meta charset="UTF-8" /><meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" /><link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
+        <!-- bootstrap 3.0.2 -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- font Awesome -->
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- Ionicons -->
+        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
+        <!-- Theme style -->
+        <link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <!-- Date Range Picker -->
+        
+                
+        <script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+        <script src="js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+        <script src="js/jquery.inputmask.js" type="text/javascript"></script>
+        <script src="js/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
+        <script src="js/jquery.inputmask.extensions.js" type="text/javascript"></script>
+        <script src="js/zebra_datepicker.js" type="text/javascript"></script>
+        
+
+        
+        <!-- Bootstrap -->
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->        
+
+        <script type="text/javascript">
+
+            function Print(elementId) {
+                var printContent = document.getElementById(elementId);
+                var windowUrl = 'about:blank';
+                var uniqueName = new Date();
+                var windowName = 'Print' + uniqueName.getTime();
+                var printWindow = window.open(windowUrl, windowName, 'left=50000,top=50000,width=0,height=0');
+                printWindow.document.write(printContent.innerHTML);
+                printWindow.document.close();
+                printWindow.focus();
+                printWindow.print();
+                printWindow.close();
+                return true;
+            }
+            function jsNothing(e) {
+                var evt = (e) ? e : window.event;
+                var key = (evt.keyCode) ? evt.keyCode : evt.which;
+                if (key != null) {
+                    return false;
+                }
+                return false;
+            }
+            function jsDecimals(e) {
+
+                var evt = (e) ? e : window.event;
+                var key = (evt.keyCode) ? evt.keyCode : evt.which;
+                if (key != null) {
+                    key = parseInt(key, 10);
+                    if ((key < 48 || key > 57) && (key < 96 || key > 105)) {
+                        if (!jsIsUserFriendlyChar(key, "Decimals")) {
+                            return false;
+                        }
+                    }
+                    else {
+                        if (evt.shiftKey) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
+            // Function to check for user friendly keys  
+            //------------------------------------------
+            function jsIsUserFriendlyChar(val, step) {
+                // Backspace, Tab, Enter, Insert, and Delete  
+                if (val == 8 || val == 9 || val == 13 || val == 45 || val == 46) {
+                    return true;
+                }
+                // Ctrl, Alt, CapsLock, Home, End, and Arrows  
+                if ((val > 16 && val < 21) || (val > 34 && val < 41)) {
+                    return true;
+                }
+                if (step == "Decimals") {
+                    if (val == 190 || val == 110) {  //Check dot key code should be allowed
+                        return true;
+                    }
+                }
+                // The rest  
+                return false;
+            }
+            function checkTextAreaMaxLength(textBox, e, length) {
+
+                var mLen = textBox["MaxLength"];
+                if (null == mLen)
+                    mLen = length;
+
+                var maxLength = parseInt(mLen);
+                if (!checkSpecialKeys(e)) {
+                    if (textBox.value.length > maxLength - 1) {
+                        if (window.event)//IE
+                            e.returnValue = false;
+                        else//Firefox
+                            e.preventDefault();
+                    }
+                }
+            }
+            function checkSpecialKeys(e) {
+                if (e.keyCode != 8 && e.keyCode != 46 && e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40)
+                    return false;
+                else
+                    return true;
+            }
+    </script>
+        
+        
+    
+</head>
+    <body class="skin-blue">
+        <!-- header logo: style can be found in header.less -->
+        <header class="header">
+            <a href="#" class="logo">
+                <!-- Add the class icon to your logo image or logo icon to add the margining -->
+                CashLine
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span>Welcome, <span id="lblUserName">Rajeev Ranjan Sinha</span> <i class="caret"></i></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header bg-light-blue">
+                                    <img id="imgUserSm" class="img-circle" src="img/avatar.png" alt="User Image" />                                    
+                                    <p>
+                                        <span id="lblUserType">Rajeev Ranjan Sinha - Agent</span>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <li class="user-body">
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="userChangePassword.aspx" class="btn btn-default btn-flat">Change Password</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="logout.aspx" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="left-side sidebar-offcanvas">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <!-- Sidebar user panel -->
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img id="imgUser" class="img-circle" src="img/avatar.png" alt="User Image" />                                    
+                        </div>
+                        <div class="pull-left info">
+                            <p>Hello, <span id="lblUser">Rajeev Ranjan Sinha</span></p>                            
+                        </div>
+                    </div>
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul class="sidebar-menu">
+                        
+                        <li class="active">
+<a href="dashboardACLI.aspx" style="background-color:Aqua; font-weight:bold;">
+<i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+<li class="treeview">
+<a href="#"><i class="fa fa-cloud"></i><span>PROFILE</span><i class="fa fa-angle-left pull-right"></i></a>
+<ul class="treeview-menu">
+<li class="small-box bg-aqua">
+<a href="#"><i class="fa fa-fw fa-user"></i>New Joining <i class="fa fa-arrow-circle-right"></i></a>
+</li>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_New_Joining"><i class="fa fa-fw fa-user"></i>New Joining</a>
+</li>
+</ul>
+<li class="small-box bg-aqua">
+<a href="#"><i class="fa fa-fw fa-user"></i>Profile Management <i class="fa fa-arrow-circle-right"></i></a>
+</li>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Edit_Agent"><i class="fa fa-fw fa-user"></i>Edit Agent</a>
+</li>
+</ul>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_View_Agent_Profile"><i class="fa fa-fw fa-user"></i>View Agent Profile</a>
+</li>
+</ul>
+</ul>
+</li>
+<li class="treeview">
+<a href="#"><i class="fa fa-flask"></i><span>PROCESS</span><i class="fa fa-angle-left pull-right"></i></a>
+<ul class="treeview-menu">
+<li class="small-box bg-aqua">
+<a href="#"><i class="fa fa-fw fa-leaf"></i>ID Top-up <i class="fa fa-arrow-circle-right"></i></a>
+</li>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Topup_of_ID"><i class="fa fa-fw fa-leaf"></i>Topup of ID</a>
+</li>
+</ul>
+</ul>
+</li>
+<li class="treeview">
+<a href="#"><i class="fa fa-pencil-square-o"></i><span>VIEW</span><i class="fa fa-angle-left pull-right"></i></a>
+<ul class="treeview-menu">
+<li class="small-box bg-aqua">
+<a href="#"><i class="fa fa-fw fa-check"></i>Binary Closings <i class="fa fa-arrow-circle-right"></i></a>
+</li>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Agent_Wise"><i class="fa fa-fw fa-check"></i>Agent Wise</a>
+</li>
+</ul>
+<li class="small-box bg-aqua">
+<a href="#"><i class="fa fa-fw fa-cut"></i>Deduction Report <i class="fa fa-arrow-circle-right"></i></a>
+</li>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Deduction_Detail"><i class="fa fa-fw fa-cut"></i>Deduction Detail</a>
+</li>
+</ul>
+<li class="small-box bg-aqua">
+<a href="#"><i class="fa fa-fw fa-list-ol"></i>Joining Reports <i class="fa fa-arrow-circle-right"></i></a>
+</li>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Binary_Tree_View"><i class="fa fa-fw fa-list-ol"></i>Binary Tree View</a>
+</li>
+</ul>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Direct_Downleg_List"><i class="fa fa-fw fa-list-ol"></i>Direct Downleg List</a>
+</li>
+</ul>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Downleg_List"><i class="fa fa-fw fa-list-ol"></i>Downleg List</a>
+</li>
+</ul>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Geneology_Tree"><i class="fa fa-fw fa-list-ol"></i>Geneology Tree</a>
+</li>
+</ul>
+</ul>
+</li>
+<li class="treeview">
+<a href="#"><i class="fa fa-pencil-square-o"></i><span>e-SERVICES</span><i class="fa fa-angle-left pull-right"></i></a>
+<ul class="treeview-menu">
+<li class="small-box bg-aqua">
+<a href="#"><i class="fa fa-fw fa-gift"></i>e-PINs <i class="fa fa-arrow-circle-right"></i></a>
+</li>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Purchase_e-PIN"><i class="fa fa-fw fa-gift"></i>Purchase e-PIN</a>
+</li>
+</ul>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Transfer_e-PIN"><i class="fa fa-fw fa-gift"></i>Transfer e-PIN</a>
+</li>
+</ul>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_View_e-PINs"><i class="fa fa-fw fa-gift"></i>View e-PINs</a>
+</li>
+</ul>
+<li class="small-box bg-aqua">
+<a href="#"><i class="fa fa-fw fa-money"></i>e-Wallet <i class="fa fa-arrow-circle-right"></i></a>
+</li>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_e-Wallet_Statement"><i class="fa fa-fw fa-money"></i>e-Wallet Statement</a>
+</li>
+</ul>
+<ul class="list-unstyled" style="padding-left:30px;">
+<li>
+<a href="CBS_Wallet_to_Wallet_Trf"><i class="fa fa-fw fa-money"></i>Wallet to Wallet Trf</a>
+</li>
+</ul>
+</ul>
+</li>
+
+                        <li><a href="Logout.aspx"  style="background-color:Orange;"><i class="fa fa-reply"></i>Logout </a></li>
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+
+            <!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">
+                <!-- Content Header (Page header) -->
+                
+                
+    <section class="content-header">
+        <h1>Dashboard</h1>
+        <ol class="breadcrumb"><li><i class="fa fa-clock-o"></i> 3/7/2021 3:47:27 PM</li></ol>
+    </section>
+     
+    <!-- Main content -->
+    <section class="content">
+    <form method="post" action="dashboardACLI.aspx" id="frmDBA" role="form">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTA5NzUxMjI5Mg9kFgJmD2QWCAIBDw8WAh4EVGV4dAUTUmFqZWV2IFJhbmphbiBTaW5oYWRkAgMPDxYCHwAFG1JhamVldiBSYW5qYW4gU2luaGEgLSBBZ2VudGRkAgUPDxYCHwAFE1JhamVldiBSYW5qYW4gU2luaGFkZAIGD2QWAmYPZBYOAgUPDxYCHwAFATRkZAIHDw8WAh8ABQEwZGQCCQ8PFgIfAAUCMTVkZAILDw8WAh8ABQEwZGQCDQ8PFgIfAAUHMTAwMC4wMGRkAg8PDxYCHwAFBTAwLjAwZGQCGQ8PFgIfAAUFMDAuMDBkZGT6HGrUH1OgyH8W35msnz+4hoNxeD0XRJKorPiBX5F5iQ==" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['frmDBA'];
+if (!theForm) {
+    theForm = document.frmDBA;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/cbs/WebResource.axd?d=Ksy07L5YWNwi2q0cfk-MMGuL8WOYuEzcoJBDsI0_6X77YhhuGWYELXRDv3TBaTN-cFuD7YIQTi7EY66gxPFCCGUFsP-2vmL8HjSZ-ECHDb81&amp;t=635331765020000000" type="text/javascript"></script>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="AA237E84" />
+	<input type="hidden" name="__SCROLLPOSITIONX" id="__SCROLLPOSITIONX" value="0" />
+	<input type="hidden" name="__SCROLLPOSITIONY" id="__SCROLLPOSITIONY" value="0" />
+	<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+	<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+</div>
+        <div class="row">
+        <div class="col-xs-12">
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h3><span id="LblRank" style="font-weight:bold;">Rank - <span id="lblRank">N/A</span>, Reward - <span id="lblReward">N/A</span></span></h3>
+            </div>
+        </div>    
+        <div class="col-xs-6">
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  <h4>	<i class="icon fa fa-check"></i> Referral Link!</h4>
+                <span id="lblrefer"><a href=""></a></span>
+            </div>
+        </div>                 
+        <div class="col-xs-6">
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4>	<i class="icon fa fa-check"></i> Product Delivered</h4>
+                <span id="LblProduct" style="font-size:18px; font-weight:600">No<br><br></span>
+            </div>
+        </div>          
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-red dark">
+            <div class="inner">
+                <h3><span id="lblTotalLeft">4</span></h3>
+                <p>Total Left Associates</p>
+            </div>                
+            <div class="icon">
+                <span class="fa fa-hand-o-left"></span>
+            </div>                              
+            <a href="genJoiningTree.aspx" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div>
+        </div>            
+        <!-- ./col -->            
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-blue">
+            <div class="inner">
+                <h3><span id="lblTotalRight">0</span></h3>
+                <p>Total Right Associates</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-hand-o-right"></i>
+            </div>
+            <a href="genJoiningTree.aspx" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div><!-- ./col -->
+        </div>          
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-green">
+            <div class="inner">
+                <h3><span id="lblLeftPV">15</span></h3>
+                <p>Total Left PV</p>
+            </div>                
+            <div class="icon">
+                <span class="fa fa-inr"></span>
+            </div>
+            <a href="genJoiningTree.aspx" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div>
+        </div><!-- ./col -->          
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3><span id="lblRightPV">0</span></h3>
+                <p>Total Right PV</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-inr"></i>
+            </div>
+            <a href="genJoiningTree.aspx" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div>
+        </div><!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3 style="font-size:30px;"><span id="ContentPlaceHolder1_LblPackage">TOP-UP<br/><span id="lblTopUpAmt">1000.00</span></span></h3>                  
+            </div>
+            <div class="icon">
+                <i class="fa fa-inr"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div>
+        </div><!-- ./col -->
+        
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-green">
+            <div class="inner">
+                <h3><span id="lblMatchingBonus">00.00</span></h3>
+                <p>Matching Bonus</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-sitemap"></i>
+            </div>
+            <a href="rptBinaryIncomeAgent.aspx" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div>
+        </div><!-- ./col -->
+
+         <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-yellow">
+            <div class="inner">
+                <h3><span id="ContentPlaceHolder1_LblSelfRecharge">0.00</span></h3>
+                <p>Self Rechage Income</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-paperclip"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div>
+        </div><!-- ./col -->
+
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3><span id="lblPINGenInc">0.00</span></h3>
+                <p>Pin Generation Income</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-pin"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div>
+        </div><!-- ./col -->            
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-red">
+            <div class="inner">
+                <h3><span id="lblRewardInc">0.00</span></h3>
+                <p>Rank and Rewards</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-ribbon-a"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div>
+        </div><!-- ./col -->                      
+
+        <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="animation animating bounceIn">
+              <div class="small-box bg-yellow">
+                <div class="inner">
+                  <h3><span id="ContentPlaceHolder1_LblTotalEarnings"><span id="lblMoneyWalletBal">0.00</span></span></h3>
+                  <p>Fund Balance</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-cubes"></i>
+                </div>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+              </div>
+            </div><!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="animation animating bounceIn">
+              <div class="small-box bg-red">
+                <div class="inner">
+                  <h3><span id="ContentPlaceHolder1_LblWithdrawl"><span id="lblTotMoneyWithdrawal">0.00</span></span></h3>
+                  <p>Total Withdrawal</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-bank"></i>
+                </div>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+              </div>
+            </div><!-- ./col -->
+        
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="animation animating bounceIn">
+            <div class="small-box bg-green">
+            <div class="inner">
+                <h3><span id="lblWalBal">00.00</span></h3>
+                <p>EWallet Balance</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-google-wallet"></i>
+            </div>
+            <a href="#" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            </div>
+        </div><!-- ./col -->    
+        
+        <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="animation animating bounceIn">
+              <div class="small-box bg-blue">
+                <div class="inner">
+                  <h3><span id="ContentPlaceHolder1_LblRWallet"><span id="lblRechWalletBal">0</span></span></h3>
+                  <p>RWallet Balance&nbsp;&nbsp;<span style="font-size:12px;"> Cash Back (<span id="ContentPlaceHolder1_lblCashBack">0</span>)</span></p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-mobile-phone 2x"></i>
+                </div>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+              </div>
+            </div><!-- ./col -->
+            
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="animation animating bounceIn">
+              <div class="small-box bg-red">
+                <div class="inner">
+                  <h3><span id="ContentPlaceHolder1_LblMoney">0.00</span></h3>
+                  <p>Money Wallet</p>
+                  
+                </div>
+                <div class="icon">
+                  <i class="fa fa-money"></i>
+                </div>
+                <a href="uaddmoney.aspx" class="small-box-footer">
+                  Add Money <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+              </div>
+            </div><!-- ./col -->
+
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="animation animating bounceIn">
+              <div class="small-box bg-aqua">
+                <div class="inner">
+                  <h3><span id="ContentPlaceHolder1_Label1">0.00</span></h3>
+                  <p>Royalty Income</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person-add"></i>
+                </div>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+              </div>
+            </div><!-- ./col -->
+            
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="animation animating bounceIn">
+              <div class="small-box bg-blue">
+                <div class="inner">
+                  <h3><span id="ContentPlaceHolder1_LblLeftBV">0.00</span></h3>
+                  <p>Left Business Volume&nbsp;&nbsp;<span style="font-size:12px;"></p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-mobile-phone 2x"></i>
+                </div>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+              </div>
+            </div><!-- ./col -->
+            
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="animation animating bounceIn">
+              <div class="small-box bg-yellow">
+                <div class="inner">
+                  <h3><span id="ContentPlaceHolder1_LblRightBV">0.00</span></h3>
+                  <p>Right Business Volume&nbsp;&nbsp;<span style="font-size:12px;"></p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-mobile-phone 2x"></i>
+                </div>
+                <a href="#" class="small-box-footer">
+                  More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+              </div>
+            </div><!-- ./col -->
+       </div><!-- /.row -->
+     
+
+<script type="text/javascript">
+//<![CDATA[
+
+theForm.oldSubmit = theForm.submit;
+theForm.submit = WebForm_SaveScrollPositionSubmit;
+
+theForm.oldOnSubmit = theForm.onsubmit;
+theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
+//]]>
+</script>
+</form>
+    </section><!-- /.content -->    
+
+                <!--
+                <section class="content-header">
+                    Website Managed By : <a href="http://www.septum.co.in" target="_blank">SEPTUM Technologies & Services</a>
+                </section>
+                -->
+            </aside><!-- /.right-side -->
+
+        </div><!-- ./wrapper -->
+        
+        <!-- add new calendar event modal -->
+        <!-- jQuery 2.0.2 -->
+        
+        
+        <!-- jQuery UI 1.10.3 -->
+        
+        <!-- AdminLTE App -->
+        <script src="js/AdminLTE/app.js" type="text/javascript"></script>       
+        <!-- Sparkline -->
+        <script src="js/plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
+
+        
+            
+
+
+    </body>
+</html>
